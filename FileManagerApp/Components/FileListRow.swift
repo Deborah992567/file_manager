@@ -100,3 +100,20 @@ private struct FlatListButtonStyle: ButtonStyle {
             .animation(AppMotion.quick, value: configuration.isPressed)
     }
 }
+
+#Preview {
+    FileListRow(
+        item: FileItem(url: URL(fileURLWithPath: "/tmp/Report.pdf"), isDirectory: false, size: 2048, modificationDate: .now, creationDate: .now),
+        isSelected: true,
+        tag: .violet,
+        isSelecting: true,
+        onTap: { _ in },
+        onLongPress: {},
+        onDelete: {},
+        onRename: {},
+        onMove: {},
+        onToggleFavorite: {}
+    )
+    .padding(16)
+    .background(Theme.background)
+}
