@@ -50,7 +50,9 @@ struct FolderPickerView: View {
                     if stack.isEmpty {
                         Button("Cancel") { dismiss() }
                     } else {
-                        Button { withAnimation(AppMotion.spring) { stack.removeLast() } } label: {
+                        Button {
+                            _ = withAnimation(AppMotion.spring) { stack.removeLast() }
+                        } label: {
                             Label("Back", systemImage: "chevron.left")
                         }
                     }
