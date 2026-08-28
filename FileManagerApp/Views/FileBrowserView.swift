@@ -132,7 +132,6 @@ struct FileBrowserView: View {
             Button("Create") { createFolder() }
             Button("Cancel", role: .cancel) {}
         }
-        .alert(viewModel.isEmpty ? "Nothing to select" : "", isPresented: Binding(get: { false }, set: { _ in })) {}
         .confirmationDialog(confirmDeleteMessage, isPresented: confirmDeleteBinding, titleVisibility: .visible) {
             Button("Delete", role: .destructive) { performDelete() }
             Button("Cancel", role: .cancel) {}
