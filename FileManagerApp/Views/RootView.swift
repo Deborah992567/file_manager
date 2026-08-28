@@ -40,6 +40,7 @@ struct RootView: View {
         }
 
         .preferredColorScheme(colorScheme)
+        .tint(settings.effectiveAccent)
         .onAppear {
             appState.engageBiometricLockIfNeeded()
         }
