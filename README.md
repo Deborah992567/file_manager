@@ -75,6 +75,12 @@ Or from the terminal:
 ./scripts/smoke_launch.sh             # boot sim, install, launch, confirm alive
 ```
 
+## Status
+
+Milestone reached — **80 pushes / commits** to this repository with a green,
+warning-free build, an 11-check headless verification suite and a passing
+simulator smoke launch. See `CHANGELOG.md` for the full build history.
+
 ## License
 
 All rights reserved. This project is a personal build-milestone showcase.
