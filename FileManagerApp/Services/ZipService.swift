@@ -321,8 +321,7 @@ enum ZipService {
         var path = url.standardizedFileURL.path
         if path.hasPrefix(basePath) { path.removeFirst(basePath.count) }
         while path.hasPrefix("/") { path.removeFirst() }
-        return path.replacingOccurrences(of: "/", with: "/")
-            .replacingOccurrences(of: #"\/"#, with: "/")
+        return path
     }
 }
 
