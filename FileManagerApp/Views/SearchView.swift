@@ -174,6 +174,9 @@ struct SearchView: View {
             .padding(.vertical, 8)
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(item.name)
+        .accessibilityHint(item.isDirectory ? "Opens this folder" : "Opens a preview of this file")
     }
 
     private var recentsSection: some View {
