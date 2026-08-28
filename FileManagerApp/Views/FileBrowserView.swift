@@ -178,7 +178,6 @@ struct FileBrowserView: View {
                     onSelect: jumpTo(node:),
                     onLockedFolder: presentLockedFolder
                 )
-                quickBar(chips: true)
             } else {
                 BreadcrumbBar(crumbs: stack, onSelect: jumpToIndex)
                     .padding(.horizontal, 16)
@@ -186,60 +185,39 @@ struct FileBrowserView: View {
 
             storageBar
         }
-        .background(
+.background(
             Rectangle().fill(Theme.background).shadow(color: .black.opacity(0.4), radius: 12, y: 6).mask(Rectangle().padding(.bottom, -12))
         )
     }
 
-    /// The "⋯" actions bar used in place of chips on expanded layers.
-    @ViewBuilder private func quickBar(chips: Bool) -> some View {
-        EmptyView()
-    }
-
     private var searchButton: some View {
-        headerButton(icon: "magnifyingglass") {
-            Haptics.tap()
+        HeaderIconButton(icon: "magnifyingglass", label: "Search") {
             onOpenSearch?()
         }
     }
 
     private var sortButton: some View {
-        headerButton(icon: "arrow.up.arrow.down") {
-            Haptics.tap()
+        HeaderIconButton(icon: "arrow.up.arrow.down", label: "Sort") {
             showSort = true
         }
     }
 
     private var newButton: some View {
-        headerButton(icon: "plus") {
-            Haptics.mediumTap()
+        HeaderIconButton(icon: "plus", label: "New", haptic: { Haptics.mediumTap() }) {
             showNewMenu = true
         }
     }
 
     private var viewToggle: some View {
-        Button {
+        HeaderIconButton(
+            icon: viewModel.viewMode == .grid ? "square.grid.2x2" : "list.bullet",
+            label: "Toggle view",
+            haptic: { Haptics.tick() }
+        ) {
             withAnimation(AppMotion.spring) {
                 viewModel.viewMode = viewModel.viewMode == .grid ? .list : .grid
             }
-            Haptics.tick()
-        } label: {
-            headerIcon(viewModel.viewMode == .grid ? "square.grid.2x2" : "list.bullet")
         }
-        .buttonStyle(PressEffectButtonStyle())
-    }
-
-    private func headerButton(icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) { headerIcon(icon) }
-            .buttonStyle(PressEffectButtonStyle())
-    }
-
-    private func headerIcon(_ icon: String) -> some View {
-        Image(systemName: icon)
-            .font(.system(size: 15, weight: .semibold))
-            .foregroundStyle(Theme.textPrimary)
-            .frame(width: 36, height: 36)
-            .background(Circle().fill(Theme.surfaceElevated))
     }
 
     private func backChip(_ action: @escaping () -> Void) -> some View {
