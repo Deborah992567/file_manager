@@ -26,9 +26,9 @@ final class SearchViewModel {
         static let recent = "search.recentQueries"
     }
 
-    init(service: SearchService = .shared, fileService: FileService = .shared, defaults: UserDefaults = .standard) {
-        self.service = service
-        self.fileService = fileService
+    init(service: SearchService? = nil, fileService: FileService? = nil, defaults: UserDefaults = .standard) {
+        self.service = service ?? .shared
+        self.fileService = fileService ?? .shared
         self.defaults = defaults
         self.recentSearches = defaults.array(forKey: Keys.recent) as? [String] ?? []
     }
