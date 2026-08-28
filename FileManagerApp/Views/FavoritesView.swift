@@ -147,5 +147,8 @@ struct FavoritesView: View {
             .contentCard()
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(item.name)
+        .accessibilityHint(item.isDirectory ? "Opens this folder" : "Opens a preview of this file")
     }
 }
