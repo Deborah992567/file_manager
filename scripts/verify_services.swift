@@ -53,6 +53,11 @@ struct VerifyServices {
         Check.ok(!hostileNames.contains("../evil.txt"), "raw traversal path rejected")
         Check.ok(hostileNames.contains("evil.txt"), "zip-slip path sanitized")
 
+        // 5. Byte formatting must stay deterministic.
+        Check.ok(ByteFormatter.format(0) == "Zero KB", "byte formatting at zero")
+        Check.ok(ByteFormatter.format(1024) == "1 KB", "byte formatting at 1 KB")
+        Check.ok(ByteFormatter.format(5 * 1024 * 1024) == "5.2 MB", "byte formatting at 5 MB")
+
         try? FileManager.default.removeItem(at: dir)
         print("All \(Check.count) checks passed.")
     }

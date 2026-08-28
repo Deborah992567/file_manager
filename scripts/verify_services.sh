@@ -9,6 +9,7 @@ swiftc \
   -parse-as-library \
   scripts/verify_services.swift \
   FileManagerApp/Services/ZipService.swift \
+  FileManagerApp/Utilities/Formatters.swift \
   -o "$BIN"
 "$BIN"
 rm -f "$BIN"
