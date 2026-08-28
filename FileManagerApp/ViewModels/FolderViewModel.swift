@@ -31,12 +31,12 @@ final class FolderViewModel {
 
     // MARK: - Init
 
-    init(node: FolderNode, service: FileService = .shared, settings: AppSettings = .shared) {
+    init(node: FolderNode, service: FileService? = nil, settings: AppSettings? = nil) {
         self.node = node
-        self.service = service
-        self.sortOption = settings.defaultSort
+        self.service = service ?? .shared
+        self.sortOption = (settings ?? .shared).defaultSort
         self.sortDirection = .ascending
-        self.viewMode = settings.defaultViewMode
+        self.viewMode = (settings ?? .shared).defaultViewMode
         reload()
     }
 
