@@ -356,7 +356,7 @@ struct FileBrowserView: View {
             isSelected: viewModel.selected.contains(item.id),
             tag: fileService.tag(for: item),
             isSelecting: viewModel.isSelecting,
-            onTap: { onTap(item) },
+            onTap: { _ in onTap(item) },
             onLongPress: { onLongPress(item) },
             onDelete: {
                 Haptics.warn()
