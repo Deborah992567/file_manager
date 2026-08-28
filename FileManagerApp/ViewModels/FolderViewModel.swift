@@ -81,7 +81,7 @@ final class FolderViewModel {
         switch sortOption {
         case .name: desc = { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         case .date: desc = { $0.modificationDate < $1.modificationDate }
-        case .size: desc = { size(of: $0) < size(of: $1) }
+        case .size: desc = { self.size(of: $0) < self.size(of: $1) }
         case .type: desc = { $0.fileExtension < $1.fileExtension }
         }
         return asc ? desc : { !desc($0, $1) }
