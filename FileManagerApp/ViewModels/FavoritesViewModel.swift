@@ -15,8 +15,8 @@ final class FavoritesViewModel {
     var isSelecting = false
     var selected: Set<String> = []
 
-    init(service: FileService = .shared) {
-        self.service = service
+    init(service: FileService? = nil) {
+        self.service = service ?? .shared
     }
 
     func reload() {
