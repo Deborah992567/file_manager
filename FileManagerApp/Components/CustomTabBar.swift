@@ -101,5 +101,9 @@ private struct TabItem: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(tab.title)
+        .accessibilityHint("Double-tap to switch to \(tab.title)")
+        .accessibilityAddTraits(isActive ? [.isSelected] : [])
     }
 }
