@@ -32,6 +32,21 @@ final class StorageService {
         }
     }
 
+    /// Lightweight device-level usage for the home storage bar.
+    struct DeviceUsage {
+        let used: Int64
+        let free: Int64
+        let capacity: Int64
+    }
+
+    /// Device-level used/free view (home screen storage bar).
+    var deviceUsage: DeviceUsage? {
+        guard let capacity = deviceCapacity() else { return nil }
+        let free = (try? fm.attributesOfFileSystem(forPath: fm.temporaryDirectory.path))?[.systemFreeSize] as? NSNumber
+        let freeValue = free?.int64Value ?? 0
+        return DeviceUsage(used: max(0, capacity - freeValue), free: freeValue, capacity: capacity)
+    }
+
     private let fm = FileManager.default
 
     /// Percent of sandbox capacity currently used (0…1).
