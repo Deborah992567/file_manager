@@ -64,3 +64,9 @@ struct StorageBarView: View {
         }
     }
 }
+
+#Preview {
+    StorageBarView(fraction: 0.42, freeLabel: "142 GB free", usedLabel: "1.2 GB in Nova Files", onTap: {})
+        .padding(16)
+        .background(Theme.background)
+}
