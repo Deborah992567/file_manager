@@ -44,11 +44,11 @@ enum Theme {
     // "families" explicitly for clarity.
     enum Font {
         /// Big confident headers (SF Pro Display).
-        static func display(_ size: CGFloat, weight: Font.Weight = .bold) -> SwiftUI.Font {
+        static func display(_ size: CGFloat, weight: SwiftUI.Font.Weight = .bold) -> SwiftUI.Font {
             .system(size: size, weight: weight, design: .default)
         }
         /// Body / supporting text (SF Pro Text).
-        static func body(_ size: CGFloat = 15, weight: Font.Weight = .regular) -> SwiftUI.Font {
+        static func body(_ size: CGFloat = 15, weight: SwiftUI.Font.Weight = .regular) -> SwiftUI.Font {
             .system(size: size, weight: weight, design: .default)
         }
         /// Numeric / mono-ish data (sizes, dates).
