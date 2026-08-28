@@ -62,6 +62,19 @@ file-system groups, so new files under `FileManagerApp/` are picked up
 automatically) and run the `FileManager` scheme on an iOS 17+ simulator or
 device. No package resolution or CocoaPods needed.
 
+Or from the terminal:
+
+```sh
+./scripts/build.sh                    # Debug, generic iOS simulator
+```
+
+## Verification
+
+```sh
+./scripts/verify_services.sh          # 11/11 headless checks (zip + formatting)
+./scripts/smoke_launch.sh             # boot sim, install, launch, confirm alive
+```
+
 ## License
 
 All rights reserved. This project is a personal build-milestone showcase.
