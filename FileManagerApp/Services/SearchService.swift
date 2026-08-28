@@ -38,15 +38,17 @@ final class SearchService {
 
         let permittedKinds = FileKind.allCases.filter { filter.matches($0) }
 
+        // The heavy tree walk runs off the main actor; only names are matched
+        // here. `FileItem` construction (MainActor) happens after we return.
         let matches = await Task.detached(priority: .userInitiated) { [fm] in
-            var found: [FileItem] = []
+            var found: [(url: URL, isDirectory: Bool)] = []
             var stack: [(url: URL, depth: Int)] = [(root, 0)]
 
             while let next = stack.popLast() {
                 guard next.depth <= maxDepth else { continue }
                 guard let contents = try? fm.contentsOfDirectory(
                     at: next.url,
-                    includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey, .contentModificationDateKey, .creationDateKey],
+                    includingPropertiesForKeys: [.isDirectoryKey],
                     options: [.skipsHiddenFiles]
                 ) else { continue }
 
@@ -54,19 +56,22 @@ final class SearchService {
                     let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
                     if isDir {
                         stack.append((url, next.depth + 1))
-                        // Folders still match a name search below.
                     }
-                    let item = FileService.item(at: url)
-                    guard let item else { continue }
-                    guard item.name.localizedCaseInsensitiveContains(trimmed) else { continue }
-                    if isDir, permittedKinds.contains(.folder) { found.append(item) }
-                    if !isDir, permittedKinds.contains(item.kind) { found.append(item) }
+                    guard url.lastPathComponent.localizedCaseInsensitiveContains(trimmed) else { continue }
+                    found.append((url, isDir))
                 }
             }
             return found
         }.value
 
-        return ResultGroup.grouping(matches, by: permittedKinds)
+        let items: [FileItem] = matches.compactMap { url, isDir in
+            guard let item = FileService.item(at: url) else { return nil }
+            let kind = isDir ? FileKind.folder : item.kind
+            guard permittedKinds.contains(kind) else { return nil }
+            return item
+        }
+
+        return Self.grouping(items, by: permittedKinds)
     }
 
     /// Paper-thin grouping helper so results can be sorted by importance or
