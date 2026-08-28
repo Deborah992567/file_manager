@@ -216,6 +216,38 @@ final class FileService {
         }
     }
 
+    /// First non-colliding URL for `name` inside `directory` (imports).
+    func uniqueURL(in directory: URL, name: String) -> URL {
+        let ext = (name as NSString).pathExtension
+        let base = (name as NSString).deletingPathExtension
+        var candidate = directory.appendingPathComponent(name)
+        var index = 2
+        while fm.fileExists(atPath: candidate.path) {
+            if ext.isEmpty {
+                candidate = directory.appendingPathComponent("\(base) \(index)")
+            } else {
+                candidate = directory.appendingPathComponent("\(base) \(index).\(ext)")
+            }
+            index += 1
+        }
+        return candidate
+    }
+
+    /// Archive file name that doesn't collide in the current browser folder.
+    func uniqueNameForArchive(base: String) -> String {
+        uniqueNameForArchive(base: base, in: rootURL)
+    }
+
+    func uniqueNameForArchive(base: String, in directory: URL) -> String {
+        var candidate = base + ".zip"
+        var index = 2
+        while fm.fileExists(atPath: directory.appendingPathComponent(candidate).path) {
+            candidate = "\(base) \(index).zip"
+            index += 1
+        }
+        return candidate
+    }
+
     // MARK: - Favorites & tags
 
     private var tagStore: [String: String] {
