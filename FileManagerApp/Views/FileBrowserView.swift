@@ -556,7 +556,7 @@ struct FileBrowserView: View {
     private func zipSelection() {
         let items = viewModel.selectedItems
         guard !items.isEmpty, let dir = viewModel.directoryURL else { return }
-        let archiveName = FileService.shared.uniqueNameForArchive(base: items.count == 1 ? items[0].nameWithoutExtension : "Archive")
+        let archiveName = FileService.shared.uniqueNameForArchive(base: items.count == 1 ? items[0].nameWithoutExtension : "Archive", in: dir)
         let archiveURL = dir.appendingPathComponent(archiveName)
 
         do {
