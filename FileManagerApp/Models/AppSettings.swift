@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 /// User-persisted preferences with automatic `UserDefaults` persistence.
 ///
