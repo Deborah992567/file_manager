@@ -42,10 +42,10 @@ struct SearchView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 6)
 
-            AnimatedSearchField(text: $vm.query) {
+            AnimatedSearchField(text: $vm.query, onSubmit: {
                 Haptics.tick()
                 vm.commitQuery()
-            }
+            })
             .padding(.horizontal, 16)
             .onChange(of: vm.query) { _, _ in vm.queryChanged() }
 
