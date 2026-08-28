@@ -74,3 +74,14 @@ struct EmptyStateView: View {
         }
     }
 }
+
+#Preview {
+    EmptyStateView(
+        icon: "tray",
+        title: "Empty folder",
+        subtitle: "Add files, or long-press the + button to create a folder here.",
+        actionTitle: "Add files",
+        action: {}
+    )
+    .background(Theme.background)
+}
