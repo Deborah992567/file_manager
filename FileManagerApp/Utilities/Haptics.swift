@@ -25,6 +25,11 @@ enum Haptics {
         prepare(selection); selection.selectionChanged()
     }
 
+    /// Medium weight for entering selection mode / batch actions.
+    static func mediumTap() {
+        prepare(medium); medium.impactOccurred(intensity: 0.75)
+    }
+
     /// Fire when something destructive is about to happen (delete confirm).
     static func warn() {
         prepare(heavy); heavy.impactOccurred(intensity: 0.9)

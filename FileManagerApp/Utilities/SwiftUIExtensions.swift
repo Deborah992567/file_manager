@@ -2,6 +2,16 @@ import SwiftUI
 
 // MARK: - Press effect
 
+/// Shared "quiet" press style for items that already convey state (tab bar
+/// items, popup rows) — subtle opacity only, no scale pop.
+struct QuietButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.7 : 1)
+            .animation(AppMotion.quick, value: configuration.isPressed)
+    }
+}
+
 /// Button style used by every tappable surface that needs press feedback.
 /// Scales down under touch and springs back — tuned via `AppMotion.quick`.
 struct PressEffectButtonStyle: ButtonStyle {
