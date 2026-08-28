@@ -18,9 +18,9 @@ final class PreviewViewModel {
     /// Set when the user is editing the name (rename sheet prefill offset).
     var renameDraft = ""
 
-    init(item: FileItem, service: FileService = .shared) {
+    init(item: FileItem, service: FileService? = nil) {
         self.item = item
-        self.service = service
+        self.service = service ?? .shared
         renameDraft = item.nameWithoutExtension
         measure()
     }
