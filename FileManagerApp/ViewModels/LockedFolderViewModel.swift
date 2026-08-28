@@ -17,9 +17,9 @@ final class LockedFolderViewModel {
     private(set) var isUnlocked = false
     private(set) var lastAuthError: String?
 
-    init(service: FileService = .shared, security: SecurityService = .shared) {
-        self.service = service
-        self.security = security
+    init(service: FileService? = nil, security: SecurityService? = nil) {
+        self.service = service ?? .shared
+        self.security = security ?? .shared
     }
 
     var folderExists: Bool { service.hasLockedFolder }
