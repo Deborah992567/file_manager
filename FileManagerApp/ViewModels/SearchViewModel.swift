@@ -85,4 +85,9 @@ final class SearchViewModel {
     var resultCount: Int {
         groups.reduce(0) { $0 + $1.items.count }
     }
+
+    /// Whether the field has any meaningful search text right now.
+    var hasActiveQuery: Bool {
+        !query.trimmingCharacters(in: .whitespaces).isEmpty
+    }
 }
