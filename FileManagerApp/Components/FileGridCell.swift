@@ -75,3 +75,16 @@ struct FileGridCell: View {
         .allowsHitTesting(false)
     }
 }
+
+#Preview {
+    FileGridCell(
+        item: FileItem(url: URL(fileURLWithPath: "/tmp/Report.pdf"), isDirectory: false, size: 2048, modificationDate: .now, creationDate: .now),
+        isSelected: false,
+        tag: .blue,
+        isSelecting: false,
+        onTap: {},
+        onLongPress: {}
+    )
+    .padding(20)
+    .background(Theme.background)
+}
