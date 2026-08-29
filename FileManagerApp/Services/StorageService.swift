@@ -42,9 +42,8 @@ final class StorageService {
     /// Device-level used/free view (home screen storage bar).
     var deviceUsage: DeviceUsage? {
         guard let capacity = deviceCapacity() else { return nil }
-        let free = (try? fm.attributesOfFileSystem(forPath: fm.temporaryDirectory.path))?[.systemFreeSize] as? NSNumber
-        let freeValue = free?.int64Value ?? 0
-        return DeviceUsage(used: max(0, capacity - freeValue), free: freeValue, capacity: capacity)
+        let free = deviceFree()
+        return DeviceUsage(used: max(0, capacity - free), free: free, capacity: capacity)
     }
 
     private let fm = FileManager.default
@@ -53,21 +52,23 @@ final class StorageService {
     func usageFraction() -> Double {
         let capacity = deviceCapacity() ?? 0
         guard capacity > 0 else { return 0 }
-        return min(1, Double(usedOnDisk() ?? 0) / Double(capacity))
+        return min(1, Double(max(0, capacity - deviceFree())) / Double(capacity))
     }
 
     /// Device-level view (what iOS Settings shows for the whole device use).
+    private func fileSystemValues() -> [FileAttributeKey: Any]? {
+        try? fm.attributesOfFileSystem(forPath: fm.temporaryDirectory.path)
+    }
+
     private func deviceCapacity() -> Int64? {
-        guard let values = try? fm.attributesOfFileSystem(forPath: fm.temporaryDirectory.path) else { return nil }
+        guard let values = fileSystemValues() else { return nil }
         return (values[.systemSize] as? NSNumber)?.int64Value
     }
 
-    private func usedOnDisk() -> Int64? {
-        guard let values = try? fm.attributesOfFileSystem(forPath: fm.temporaryDirectory.path) else { return nil }
-        return (values[.systemFreeSize] as? NSNumber).map { capacity - $0.int64Value } ?? nil
+    private func deviceFree() -> Int64 {
+        guard let values = fileSystemValues() else { return 0 }
+        return (values[.systemFreeSize] as? NSNumber)?.int64Value ?? 0
     }
-
-    private var capacity: Int64 { deviceCapacity() ?? 0 }
 
     /// Full sandbox scan: totals + category buckets inside the app.
     func snapshot(for root: URL) -> Snapshot {
@@ -120,7 +121,11 @@ final class StorageService {
         var stack = [url]
         while !stack.isEmpty {
             let dir = stack.removeLast()
-            guard let list = try? fm.contentsOfDirectory(at: dir, includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey], options: [.skipsHiddenFiles]) else { continue }
+            guard let list = try? fm.contentsOfDirectory(
+                at: dir,
+                includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey],
+                options: [.skipsHiddenFiles]
+            ) else { continue }
             for child in list {
                 if (try? child.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false {
                     stack.append(child)
