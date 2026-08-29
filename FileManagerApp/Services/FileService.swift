@@ -199,37 +199,37 @@ final class FileService {
     /// Picks the first free sibling name ("name", "name 2", "name 3", …).
     private func uniqueSiblingURL(for url: URL) -> URL {
         guard fm.fileExists(atPath: url.path) else { return url }
-        let parent = url.deletingLastPathComponent()
-        let ext = url.pathExtension
-        let base = url.deletingPathExtension().lastPathComponent
-        var index = 2
-        while true {
-            let candidate: URL
-            if ext.isEmpty {
-                candidate = parent.appendingPathComponent("\(base) \(index)")
-            } else {
-                candidate = parent.appendingPathComponent("\(base) \(index).\(ext)")
-            }
-            if !fm.fileExists(atPath: candidate.path) { return candidate }
-            index += 1
-        }
+        return firstFreeName(
+            base: url.deletingPathExtension().lastPathComponent,
+            ext: url.pathExtension,
+            in: url.deletingLastPathComponent()
+        )
     }
 
     /// First non-colliding URL for `name` inside `directory` (imports).
     func uniqueURL(in directory: URL, name: String) -> URL {
-        let ext = (name as NSString).pathExtension
-        let base = (name as NSString).deletingPathExtension
-        var candidate = directory.appendingPathComponent(name)
+        firstFreeName(
+            base: (name as NSString).deletingPathExtension,
+            ext: (name as NSString).pathExtension,
+            in: directory
+        )
+    }
+
+    /// Shared dedup: walk "base", "base 2", "base 3", … until a free sibling.
+    private func firstFreeName(base: String, ext: String, in directory: URL) -> URL {
+        let first: URL
+        if ext.isEmpty {
+            first = directory.appendingPathComponent(base)
+        } else {
+            first = directory.appendingPathComponent("\(base).\(ext)")
+        }
+        guard fm.fileExists(atPath: first.path) else { return first }
         var index = 2
-        while fm.fileExists(atPath: candidate.path) {
-            if ext.isEmpty {
-                candidate = directory.appendingPathComponent("\(base) \(index)")
-            } else {
-                candidate = directory.appendingPathComponent("\(base) \(index).\(ext)")
-            }
+        while true {
+            let candidate = directory.appendingPathComponent(ext.isEmpty ? "\(base) \(index)" : "\(base) \(index).\(ext)")
+            if !fm.fileExists(atPath: candidate.path) { return candidate }
             index += 1
         }
-        return candidate
     }
 
     /// Archive file name that doesn't collide in the current browser folder.
