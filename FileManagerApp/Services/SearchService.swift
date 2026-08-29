@@ -41,7 +41,7 @@ final class SearchService {
         // The heavy tree walk runs off the main actor; only names are matched
         // here. `FileItem` construction (MainActor) happens after we return.
         let matches = await Task.detached(priority: .userInitiated) { [fm] in
-            var found: [(url: URL, isDirectory: Bool)] = []
+            var found: [URL] = []
             var stack: [(url: URL, depth: Int)] = [(root, 0)]
 
             while let next = stack.popLast() {
@@ -58,16 +58,15 @@ final class SearchService {
                         stack.append((url, next.depth + 1))
                     }
                     guard url.lastPathComponent.localizedCaseInsensitiveContains(trimmed) else { continue }
-                    found.append((url, isDir))
+                    found.append(url)
                 }
             }
             return found
         }.value
 
-        let items: [FileItem] = matches.compactMap { url, isDir in
+        let items: [FileItem] = matches.compactMap { url in
             guard let item = FileService.item(at: url) else { return nil }
-            let kind = isDir ? FileKind.folder : item.kind
-            guard permittedKinds.contains(kind) else { return nil }
+            guard permittedKinds.contains(item.kind) else { return nil }
             return item
         }
 
