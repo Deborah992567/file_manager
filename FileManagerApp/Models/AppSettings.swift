@@ -25,6 +25,12 @@ final class AppSettings {
 
     private let defaults: UserDefaults
 
+    /// Decode a raw-string backed enum or fall back to the provided default.
+    private static func enumValue<T: RawRepresentable>(_ key: String, in defaults: UserDefaults, default fallback: T) -> T where T.RawValue == String {
+        guard let raw = defaults.string(forKey: key), let value = T(rawValue: raw) else { return fallback }
+        return value
+    }
+
     // MARK: - State (all persisted)
 
     var hasCompletedOnboarding: Bool {
@@ -65,10 +71,10 @@ final class AppSettings {
         self.defaults = defaults
         self.hasCompletedOnboarding = defaults.bool(forKey: Keys.onboardingDone)
         self.isBiometricEnabled = defaults.bool(forKey: Keys.biometric)
-        self.themePreference = ThemePreference(rawValue: defaults.string(forKey: Keys.theme) ?? "") ?? .dark
-        self.accentChoice = AccentChoice(rawValue: defaults.string(forKey: Keys.accent) ?? "") ?? .blue
-        self.defaultViewMode = ViewMode(rawValue: defaults.string(forKey: Keys.viewMode) ?? "") ?? .grid
-        self.defaultSort = SortOption(rawValue: defaults.string(forKey: Keys.sort) ?? "") ?? .name
+        self.themePreference = Self.enumValue(Keys.theme, in: defaults, default: .dark)
+        self.accentChoice = Self.enumValue(Keys.accent, in: defaults, default: .blue)
+        self.defaultViewMode = Self.enumValue(Keys.viewMode, in: defaults, default: .grid)
+        self.defaultSort = Self.enumValue(Keys.sort, in: defaults, default: .name)
         self.lockedFolderExists = defaults.bool(forKey: Keys.lockedFolder)
     }
 }
