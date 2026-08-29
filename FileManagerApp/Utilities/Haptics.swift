@@ -4,7 +4,7 @@ import UIKit
 ///
 /// Kept as static generators because creating a `UIImpactFeedbackGenerator`
 /// per tap is wasteful and lags on older devices. All calls are main-thread
-/// (UI somat) and safely no-ops where unsupported.
+/// (UI side) and safely no-ops where unsupported.
 enum Haptics {
 
     private static let light = UIImpactFeedbackGenerator(style: .light)

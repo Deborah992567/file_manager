@@ -77,7 +77,7 @@ final class FolderViewModel {
 
     private func makeComparator() -> (FileItem, FileItem) -> Bool {
         let asc = sortDirection == .ascending
-        var desc: (FileItem, FileItem) -> Bool
+        let desc: (FileItem, FileItem) -> Bool
         switch sortOption {
         case .name: desc = { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         case .date: desc = { $0.modificationDate < $1.modificationDate }
@@ -94,11 +94,8 @@ final class FolderViewModel {
     // MARK: - Selection
 
     func toggleSelection(_ item: FileItem) {
-        if selected.contains(item.id) {
-            selected.remove(item.id)
-        } else {
-            selected.insert(item.id)
-        }
+        let id = item.id
+        if selected.contains(id) { selected.remove(id) } else { selected.insert(id) }
     }
 
     func enterSelection(_ item: FileItem) {
