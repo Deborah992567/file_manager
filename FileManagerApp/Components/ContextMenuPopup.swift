@@ -13,19 +13,29 @@ enum ContextMenuPopup {
 
     // MARK: - Shared actions (native context menu)
 
-    static func menu(for item: FileItem, tag: TagColor?) -> some View {
+    static func menu(
+        for item: FileItem,
+        tag: TagColor?,
+        onToggleFavorite: @escaping () -> Void = {},
+        onDuplicate: @escaping () -> Void = {},
+        onRename: @escaping () -> Void = {},
+        onMove: @escaping () -> Void = {},
+        onZip: @escaping () -> Void = {},
+        onShare: @escaping () -> Void = {},
+        onDelete: @escaping () -> Void = {}
+    ) -> some View {
         Group {
-            Button { } label: { Label(tag == nil ? "Add to Favorites" : "Remove from Favorites", systemImage: "star") }
+            Button(action: onToggleFavorite) { Label(tag == nil ? "Add to Favorites" : "Remove from Favorites", systemImage: "star") }
 
             if !item.isDirectory {
-                Button { } label: { Label("Duplicate", systemImage: "plus.square.on.square") }
+                Button(action: onDuplicate) { Label("Duplicate", systemImage: "plus.square.on.square") }
             }
-            Button { } label: { Label("Rename", systemImage: "pencil") }
-            Button { } label: { Label("Move", systemImage: "folder") }
-            Button { } label: { Label(item.isDirectory ? "Compress" : "Zip", systemImage: "archivebox") }
-            Button { } label: { Label("Share", systemImage: "square.and.arrow.up") }
+            Button(action: onRename) { Label("Rename", systemImage: "pencil") }
+            Button(action: onMove) { Label("Move", systemImage: "folder") }
+            Button(action: onZip) { Label(item.isDirectory ? "Compress" : "Zip", systemImage: "archivebox") }
+            Button(action: onShare) { Label("Share", systemImage: "square.and.arrow.up") }
             Divider()
-            Button(role: .destructive) { } label: { Label("Delete", systemImage: "trash") }
+            Button(role: .destructive, action: onDelete) { Label("Delete", systemImage: "trash") }
         }
     }
 }

@@ -10,6 +10,13 @@ struct FileGridCell: View {
     let isSelecting: Bool
     let onTap: () -> Void
     let onLongPress: () -> Void
+    let onDelete: () -> Void
+    let onRename: () -> Void
+    let onMove: () -> Void
+    let onToggleFavorite: () -> Void
+    let onDuplicate: () -> Void
+    let onZip: () -> Void
+    let onShare: () -> Void
 
     var body: some View {
         Button(action: onTap) {
@@ -49,7 +56,16 @@ struct FileGridCell: View {
         }
         .buttonStyle(PressEffectButtonStyle())
         .contextMenu {
-            ContextMenuPopup.menu(for: item, tag: tag)  // shared menu builder
+            ContextMenuPopup.menu(
+                for: item, tag: tag,
+                onToggleFavorite: onToggleFavorite,
+                onDuplicate: onDuplicate,
+                onRename: onRename,
+                onMove: onMove,
+                onZip: onZip,
+                onShare: onShare,
+                onDelete: onDelete
+            )
         }
         .simultaneousGesture(
             LongPressGesture(minimumDuration: 0.45)
@@ -86,7 +102,14 @@ struct FileGridCell: View {
         tag: .blue,
         isSelecting: false,
         onTap: {},
-        onLongPress: {}
+        onLongPress: {},
+        onDelete: {},
+        onRename: {},
+        onMove: {},
+        onToggleFavorite: {},
+        onDuplicate: {},
+        onZip: {},
+        onShare: {}
     )
     .padding(20)
     .background(Theme.background)

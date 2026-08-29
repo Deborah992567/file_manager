@@ -310,7 +310,14 @@ struct FileBrowserView: View {
                     tag: fileService.tag(for: item),
                     isSelecting: viewModel.isSelecting,
                     onTap: { onTap(item) },
-                    onLongPress: { onLongPress(item) }
+                    onLongPress: { onLongPress(item) },
+                    onDelete: { deleteSingle(item) },
+                    onRename: { renameSingle(item) },
+                    onMove: { moveSingle(item) },
+                    onToggleFavorite: { toggleFavoriteSingle(item) },
+                    onDuplicate: { duplicateSingle(item) },
+                    onZip: { zipSingle(item) },
+                    onShare: { shareSingle(item) }
                 )
                 .matchedGeometryEffect(id: item.id, in: heroNS)
                 .onDrag {
@@ -331,23 +338,13 @@ struct FileBrowserView: View {
             isSelecting: viewModel.isSelecting,
             onTap: { _ in onTap(item) },
             onLongPress: { onLongPress(item) },
-            onDelete: {
-                Haptics.warn()
-                confirmDeleteItem = item
-            },
-            onRename: {
-                Haptics.tick()
-                renameItem = item
-                renameText = item.nameWithoutExtension
-            },
-            onMove: {
-                moveSingle(item)
-            },
-            onToggleFavorite: {
-                viewModel.toggleFavorite(item)
-                appState.showToast(.success(viewModel.isSelecting ? "" : (fileService.isFavorite(item) ? "Added to Favorites" : "Removed from Favorites"),
-                                           subtitle: item.name))
-            }
+            onDelete: { deleteSingle(item) },
+            onRename: { renameSingle(item) },
+            onMove: { moveSingle(item) },
+            onToggleFavorite: { toggleFavoriteSingle(item) },
+            onDuplicate: { duplicateSingle(item) },
+            onZip: { zipSingle(item) },
+            onShare: { shareSingle(item) }
         )
         .onDrag {
             dragProvider(for: item)
@@ -501,6 +498,56 @@ struct FileBrowserView: View {
         showFolderPickerForBatch = true
         viewModel.selected = [item.id]
         batchOperation = .move
+    }
+
+    private func toggleFavoriteSingle(_ item: FileItem) {
+        viewModel.toggleFavorite(item)
+        appState.showToast(.success(fileService.isFavorite(item) ? "Added to Favorites" : "Removed from Favorites",
+                                    subtitle: item.name))
+    }
+
+    private func renameSingle(_ item: FileItem) {
+        Haptics.tick()
+        renameItem = item
+        renameText = item.nameWithoutExtension
+    }
+
+    private func deleteSingle(_ item: FileItem) {
+        Haptics.warn()
+        confirmDeleteItem = item
+    }
+
+    private func duplicateSingle(_ item: FileItem) {
+        switch viewModel.duplicate(item) {
+        case .success:
+            Haptics.success()
+            appState.showToast(.success("Duplicated", subtitle: item.name))
+        case .failure(let error):
+            Haptics.error()
+            appState.showToast(.error(error.localizedDescription))
+        }
+    }
+
+    private func zipSingle(_ item: FileItem) {
+        guard let dir = viewModel.directoryURL else { return }
+        // If zipping a folder, place the archive in its parent so the archive
+        // is not created inside the very content being collected.
+        let destination = item.isDirectory ? item.url.deletingLastPathComponent() : dir
+        let archiveName = fileService.uniqueNameForArchive(base: item.nameWithoutExtension, in: destination)
+        do {
+            try ZipService.compress(items: [item.url], to: destination.appendingPathComponent(archiveName))
+            viewModel.reload()
+            Haptics.success()
+            appState.showToast(.success(item.isDirectory ? "Compressed" : "Zipped", subtitle: archiveName))
+        } catch {
+            Haptics.error()
+            appState.showToast(.error(error.localizedDescription))
+        }
+    }
+
+    private func shareSingle(_ item: FileItem) {
+        Haptics.tick()
+        Share.files([item])
     }
 
     private func runBatchOperation(to destination: URL) {

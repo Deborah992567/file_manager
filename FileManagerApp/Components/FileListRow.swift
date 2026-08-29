@@ -13,6 +13,9 @@ struct FileListRow: View {
     let onRename: () -> Void
     let onMove: () -> Void
     let onToggleFavorite: () -> Void
+    let onDuplicate: () -> Void
+    let onZip: () -> Void
+    let onShare: () -> Void
 
     var body: some View {
         Button {
@@ -62,7 +65,16 @@ struct FileListRow: View {
         }
         .buttonStyle(FlatListButtonStyle())
         .contextMenu {
-            ContextMenuPopup.menu(for: item, tag: tag)
+            ContextMenuPopup.menu(
+                for: item, tag: tag,
+                onToggleFavorite: onToggleFavorite,
+                onDuplicate: onDuplicate,
+                onRename: onRename,
+                onMove: onMove,
+                onZip: onZip,
+                onShare: onShare,
+                onDelete: onDelete
+            )
         }
         .simultaneousGesture(
             LongPressGesture(minimumDuration: 0.45)
@@ -116,7 +128,10 @@ private struct FlatListButtonStyle: ButtonStyle {
         onDelete: {},
         onRename: {},
         onMove: {},
-        onToggleFavorite: {}
+        onToggleFavorite: {},
+        onDuplicate: {},
+        onZip: {},
+        onShare: {}
     )
     .padding(16)
     .background(Theme.background)
