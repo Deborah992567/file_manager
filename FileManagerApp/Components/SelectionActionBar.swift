@@ -46,6 +46,7 @@ struct SelectionActionBar: View {
                         .background(Circle().fill(Theme.surfaceElevated))
                 }
                 .buttonStyle(QuietButtonStyle())
+                .accessibilityLabel("Close selection")
 
                 Text("\(count) selected")
                     .font(Theme.Font.body(14, weight: .bold))
