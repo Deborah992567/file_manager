@@ -19,7 +19,6 @@ struct FilePreviewSheet: View {
     @State private var renameText = ""
     @State private var showDeleteConfirm = false
     @State private var showMovePicker = false
-    @State private var showShare = false
 
     init(context: FilePreviewContext) {
         self.context = context
@@ -68,9 +67,6 @@ struct FilePreviewSheet: View {
         .fullScreenCover(isPresented: $showQuickLook) {
             QuickLookView(urls: [vm.item.url])
                 .ignoresSafeArea()
-        }
-        .onChange(of: showShare) { _, on in
-            if on { Share.files([vm.item]); showShare = false }
         }
     }
 
@@ -164,7 +160,7 @@ struct FilePreviewSheet: View {
                 renameText = vm.item.nameWithoutExtension
                 showRename = true
             }
-            previewAction("SHARE", icon: "square.and.arrow.up", tint: Theme.success) { showShare = true }
+            previewAction("SHARE", icon: "square.and.arrow.up", tint: Theme.success) { Share.files([vm.item]) }
             PreviewActionButton("INFO", icon: "info.circle", tint: nil) { presentInfo() }
             previewAction("DELETE", icon: "trash", tint: Theme.danger) {
                 Haptics.warn()
@@ -199,9 +195,7 @@ struct FilePreviewSheet: View {
 
     private var infoRows: some View {
         Group {
-            if let url = vm.item.url as URL? {
-                infoRow("Path", value: url.deletingLastPathComponent().lastPathComponent)
-            }
+            infoRow("Path", value: vm.item.url.deletingLastPathComponent().lastPathComponent)
             infoRow("Modified", value: DateFormatting.fileDate(vm.item.modificationDate))
             infoRow("Created", value: DateFormatting.fileDate(vm.item.creationDate))
             infoRow("Type", value: vm.item.isDirectory ? "Folder" : vm.item.fileExtension.uppercased())
