@@ -269,6 +269,9 @@ struct LockedFolderView: View {
             .contentCard()
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(item.name)
+        .accessibilityHint(item.isDirectory ? "Folder" : "Opens a preview of this file")
     }
 
     private func confirmDelete() {
@@ -286,8 +289,6 @@ struct LockedFolderView: View {
             appState.showToast(.error(error.localizedDescription))
         }
     }
-
-    private var quickLookBindingRemoved: Never { fatalError() }
 }
 
 /// Identifiable wrapper so Quick Look can be presented as a cover item.
