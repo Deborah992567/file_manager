@@ -239,7 +239,9 @@ enum ZipService {
                 decompressed = inflated
             default: throw ZipError.unsupportedMethod
             }
-            _ = usizeRaw  // informational only
+            // The inflated payload must match the declared uncompressed size;
+            // a mismatch means the stream was truncated or tampered with.
+            guard decompressed.count == usizeRaw else { throw ZipError.corruptedEntry(name) }
 
             entries.append(ZipEntry(name: sanitize(name), data: decompressed, isDirectory: isDir))
             cursor += 46 + nlen + elen + clen
