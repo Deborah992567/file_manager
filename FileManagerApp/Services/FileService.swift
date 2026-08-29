@@ -274,6 +274,14 @@ final class FileService {
         tag(for: item) != nil
     }
 
+    /// Flip the star state and report whether the item is now favorited.
+    @discardableResult
+    func toggleFavorite(_ item: FileItem) -> Bool {
+        let isFav = isFavorite(item)
+        setTag(isFav ? .none : .blue, for: item)
+        return !isFav
+    }
+
     func favoriteItems() -> [FileItem] {
         tagStore.keys
             .sorted()

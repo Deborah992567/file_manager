@@ -56,11 +56,7 @@ final class PreviewViewModel {
     }
 
     func toggleFavorite() {
-        if service.isFavorite(item) {
-            service.setTag(.none, for: item)
-        } else {
-            service.setTag(.blue, for: item)
-        }
+        service.toggleFavorite(item)
         Haptics.tick()
     }
 }

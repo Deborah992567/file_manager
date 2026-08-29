@@ -178,11 +178,7 @@ final class FolderViewModel {
     }
 
     func toggleFavorite(_ item: FileItem) {
-        if service.isFavorite(item) {
-            service.setTag(.none, for: item)
-        } else {
-            service.setTag(.blue, for: item)
-        }
+        service.toggleFavorite(item)
         reload()
         Haptics.tick()
     }
