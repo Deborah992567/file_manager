@@ -37,6 +37,7 @@ struct AnimatedSearchField: View {
                 }
                 .buttonStyle(QuietButtonStyle())
                 .transition(.scale.combined(with: .opacity))
+                .accessibilityLabel("Clear search")
             }
 
             if let onCancel {

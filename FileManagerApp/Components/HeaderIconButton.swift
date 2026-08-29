@@ -6,9 +6,9 @@ import SwiftUI
 struct HeaderIconButton: View {
     let icon: String
     let label: String
-    var tint: Color? = nil
-    var haptic: () -> Void = { Haptics.tap() }
-    var action: () -> Void
+    let tint: Color?
+    let haptic: () -> Void
+    let action: () -> Void
 
     init(
         icon: String,
