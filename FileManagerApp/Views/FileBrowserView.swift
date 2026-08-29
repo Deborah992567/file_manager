@@ -121,7 +121,6 @@ struct FileBrowserView: View {
         }
         .sheet(isPresented: $showPhotoPicker) {
             PhotoPickerView { images in importedImages = images }
-                .onAppear { }
         }
         .fullScreenCover(isPresented: $showStorage) {
             StorageView()
@@ -135,9 +134,6 @@ struct FileBrowserView: View {
         .confirmationDialog(confirmDeleteMessage, isPresented: confirmDeleteBinding, titleVisibility: .visible) {
             Button("Delete", role: .destructive) { performDelete() }
             Button("Cancel", role: .cancel) {}
-        }
-        .onChange(of: viewModel.selected) { _, newSelection in
-            // keep the confirmDelete dialog from leaking into selection state
         }
         .onChange(of: importedImages) { _, images in
             guard !images.isEmpty else { return }
