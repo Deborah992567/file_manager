@@ -8,7 +8,6 @@ struct FileGridCell: View {
     let isSelected: Bool
     let tag: TagColor?
     let isSelecting: Bool
-    let hasIconBadge: Bool = false
     let onTap: () -> Void
     let onLongPress: () -> Void
 
@@ -56,6 +55,10 @@ struct FileGridCell: View {
             LongPressGesture(minimumDuration: 0.45)
                 .onEnded { _ in onLongPress() }
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(item.name), \(item.isDirectory ? "folder" : ByteFormatter.format(item.size))")
+        .accessibilityHint(item.isDirectory ? "Opens this folder" : "Opens a preview of this file")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     private var selectionMark: some View {
