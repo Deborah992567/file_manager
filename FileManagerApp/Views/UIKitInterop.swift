@@ -81,18 +81,17 @@ struct PhotoPickerView: UIViewControllerRepresentable {
 
 // MARK: - Share sheet
 
-/// `UIActivityViewController` bridge for exporting files.
-struct ShareSheet: UIViewControllerRepresentable {
-    let items: [Any]
-    var completion: (() -> Void)? = nil
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        vc.completionWithItemsHandler = { _, _, _, _ in completion?() }
-        return vc
+/// Presents the share sheet for one or more files.
+enum Share {
+    @MainActor
+    static func files(_ items: [FileItem]) {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let root = windowScene.windows.first?.rootViewController else { return }
+        let urls = items.map(\.url)
+        let vc = UIActivityViewController(activityItems: urls, applicationActivities: nil)
+        vc.popoverPresentationController?.sourceView = root.view
+        root.present(vc, animated: true)
     }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 // MARK: - Quick Look preview
@@ -131,19 +130,4 @@ final class PreviewItemSource: NSObject, QLPreviewItem {
     init(url: URL) { self.url = url; super.init() }
     var previewItemURL: URL? { url }
     var previewItemTitle: String? { url.lastPathComponent }
-}
-
-// MARK: - System sheet helpers
-
-/// Presents the share sheet for one or more files.
-enum Share {
-    @MainActor
-    static func files(_ items: [FileItem]) {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let root = windowScene.windows.first?.rootViewController else { return }
-        let urls = items.map(\.url)
-        let vc = UIActivityViewController(activityItems: urls, applicationActivities: nil)
-        vc.popoverPresentationController?.sourceView = root.view
-        root.present(vc, animated: true)
-    }
 }
