@@ -47,6 +47,7 @@ struct FavoritesView: View {
                             .background(Circle().fill(Theme.surfaceElevated))
                     }
                     .buttonStyle(PressEffectButtonStyle())
+                    .accessibilityLabel("Clear all favorites")
                 }
             }
             .padding(.horizontal, 16)
@@ -150,5 +151,10 @@ struct FavoritesView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(item.name)
         .accessibilityHint(item.isDirectory ? "Opens this folder" : "Opens a preview of this file")
+        .accessibilityAction(named: "Remove from Favorites") {
+            Haptics.tick()
+            vm.untag(item)
+            appState.showToast(.info("Removed from Favorites", subtitle: item.name))
+        }
     }
 }
