@@ -83,6 +83,7 @@ struct SearchView: View {
                         .overlay(Capsule().strokeBorder(isSelected ? Theme.accent.opacity(0.4) : Theme.surfaceStroke, lineWidth: 1))
                     }
                     .buttonStyle(QuietButtonStyle())
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
             }
             .padding(.horizontal, 16)
@@ -196,6 +197,7 @@ struct SearchView: View {
                             .foregroundStyle(Theme.accent)
                     }
                     .buttonStyle(QuietButtonStyle())
+                    .accessibilityLabel("Clear recent searches")
                 }
                 .padding(.horizontal, 16)
 
@@ -218,6 +220,7 @@ struct SearchView: View {
                                 .background(Capsule().fill(Theme.surfaceElevated))
                             }
                             .buttonStyle(QuietButtonStyle())
+                            .accessibilityLabel("Run recent search \(term)")
                         }
                     }
                     .padding(.horizontal, 16)

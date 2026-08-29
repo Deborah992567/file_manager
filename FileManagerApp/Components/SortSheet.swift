@@ -100,6 +100,7 @@ struct SortSheet: View {
                     )
                 }
                 .buttonStyle(QuietButtonStyle())
+                    .accessibilityAddTraits(selection == option ? .isSelected : [])
             }
         }
     }
@@ -128,6 +129,7 @@ struct SortSheet: View {
             .padding(.vertical, 10)
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
     private func directionButton(_ direction: SortDirection) -> some View {
@@ -146,6 +148,7 @@ struct SortSheet: View {
             .background(Capsule().fill(sortDirection == direction ? Theme.accent : Theme.surfaceElevated))
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityAddTraits(sortDirection == direction ? .isSelected : [])
     }
 }
 
