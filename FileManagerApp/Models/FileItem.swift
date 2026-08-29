@@ -70,11 +70,11 @@ enum FileKind: String, CaseIterable, Identifiable, Sendable {
     var tint: Color {
         switch self {
         case .folder:   return Theme.accent
-        case .image:    return Color(hex: 0x34D399)
+        case .image:    return Theme.success
         case .video:    return Color(hex: 0x8B5CF6)
         case .audio:    return Color(hex: 0xF472B6)
-        case .document: return Color(hex: 0x4D8DFF)
-        case .archive:  return Color(hex: 0xFBBF24)
+        case .document: return Theme.accent
+        case .archive:  return Theme.warning
         case .code:     return Color(hex: 0x22D3EE)
         case .text:     return Color(hex: 0xA1A1A8)
         case .other:    return Color(hex: 0x6B6B72)
@@ -147,10 +147,10 @@ enum FileCategory: String, CaseIterable, Sendable {
 
     var color: Color {
         switch self {
-        case .documents: return Color(hex: 0x4D8DFF)
-        case .media:     return Color(hex: 0x34D399)
-        case .downloads: return Color(hex: 0xFBBF24)
-        case .other:     return Color(hex: 0x8B5CF6)
+        case .documents: return Theme.accent
+        case .media:     return Theme.success
+        case .downloads: return Theme.warning
+        case .other:     return Theme.accentViolet
         }
     }
 }
@@ -167,12 +167,12 @@ enum TagColor: String, CaseIterable, Identifiable, Sendable {
     var color: Color {
         switch self {
         case .none:   return Theme.accent
-        case .red:    return Color(hex: 0xFF5B5B)
+        case .red:    return Theme.danger
         case .orange: return Color(hex: 0xFB923C)
-        case .yellow: return Color(hex: 0xFBBF24)
-        case .green:  return Color(hex: 0x34D399)
+        case .yellow: return Theme.warning
+        case .green:  return Theme.success
         case .blue:   return Color(hex: 0x60A5FA)
-        case .violet: return Color(hex: 0x8B5CF6)
+        case .violet: return Theme.accentViolet
         }
     }
 
