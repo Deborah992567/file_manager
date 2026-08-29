@@ -602,11 +602,11 @@ struct FileBrowserView: View {
         guard item.isDirectory else { return false }
         Haptics.softTap()
         for provider in providers {
-            _ = provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { itemData, _ in
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { itemData, _ in
                 guard let data = itemData as? Data,
-                      let url = URL(dataRepresentation: data, relativeTo: nil),
-                      let dropped = FileService.item(at: url) else { return }
+                      let url = URL(dataRepresentation: data, relativeTo: nil) else { return }
                 Task { @MainActor in
+                    guard let dropped = FileService.item(at: url) else { return }
                     do {
                         try self.fileService.move([dropped], to: item.url)
                         self.viewModel.reload()
