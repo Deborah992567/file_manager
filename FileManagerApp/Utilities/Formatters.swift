@@ -3,8 +3,10 @@ import Foundation
 /// Deterministic, cached formatting helpers (avoid re-creating formatters
 /// on every cell — those are notoriously expensive).
 enum ByteFormatter {
+    private static let formatter = ByteCountFormatter()
+
     static func format(_ bytes: Int64) -> String {
-        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+        formatter.string(fromByteCount: bytes)
     }
 }
 
