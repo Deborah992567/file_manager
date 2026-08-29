@@ -35,7 +35,7 @@ echo "==> Launching"
 xcrun simctl launch "$DEVICE" "$BUNDLE"
 sleep 6
 
-if xcrun simctl spawn "$DEVICE" launchctl list 2>/dev/null | grep -q "com.novafiles.app"; then
+if xcrun simctl spawn "$DEVICE" launchctl list 2>/dev/null | grep -q "$BUNDLE"; then
   echo "==> OK: app is running"
 else
   echo "==> ERROR: app exited (crash suspected)"
