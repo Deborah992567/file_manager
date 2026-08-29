@@ -43,7 +43,7 @@ struct FolderPickerView: View {
                 }
             }
             .background(Theme.background.ignoresSafeArea())
-            .navigationTitle(stack.count == 0 ? "Choose folder" : current.lastPathComponent)
+            .navigationTitle(stack.isEmpty ? "Choose folder" : current.lastPathComponent)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
