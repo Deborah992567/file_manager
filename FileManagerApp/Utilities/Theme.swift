@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Central color system. Single source of truth so every screen stays
 /// visually consistent without hard-coded hex values sprinkled around.
@@ -10,22 +11,29 @@ import SwiftUI
 ///   text        #F2F2F0 — high continuity off-white
 enum Theme {
 
-    // MARK: - Core surfaces / text
+    // MARK: - Core surfaces / text (adaptive: dark cinematic by default, light
+    // mode when the root view forces `.light` or the system is in light mode).
 
-    static let background      = Color(hex: 0x0A0A0C)
-    static let surface         = Color(hex: 0x151517)
-    static let surfaceElevated = Color(hex: 0x1C1C1F)
-    static let surfaceStroke   = Color.white.opacity(0.07)
+    static let background      = Color.adaptive(light: 0xF5F5F7, dark: 0x0A0A0C)
+    static let surface         = Color.adaptive(light: 0xFFFFFF, dark: 0x151517)
+    static let surfaceElevated = Color.adaptive(light: 0xECECF0, dark: 0x1C1C1F)
+    static let surfaceStroke   = Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.07)
+            : UIColor.black.withAlphaComponent(0.08)
+    })
 
-    static let textPrimary   = Color(hex: 0xF2F2F0)
-    static let textSecondary = Color(hex: 0xA1A1A8)
-    static let textTertiary  = Color(hex: 0x5C5C63)
+    static let textPrimary   = Color.adaptive(light: 0x1B1B1F, dark: 0xF2F2F0)
+    static let textSecondary = Color.adaptive(light: 0x6C6C74, dark: 0xA1A1A8)
+    static let textTertiary  = Color.adaptive(light: 0x94949B, dark: 0x5C5C63)
 
     // MARK: - Accents (user selectable, default electric blue)
 
     static let accent = Color(hex: 0x4D8DFF)   // electric blue
     static let accentViolet = Color(hex: 0x8B5CF6)
-    static let accentSoft   = Color(hex: 0x4D8DFF).opacity(0.14)
+    static let accentSoft   = Color(uiColor: UIColor { traits in
+        UIColor(hex: 0x4D8DFF).withAlphaComponent(traits.userInterfaceStyle == .dark ? 0.16 : 0.14)
+    })
 
     // MARK: - Semantic
 
@@ -75,9 +83,16 @@ private enum Modifier {
         let radius: CGFloat
         let y: CGFloat
         let opacity: Double
+        @Environment(\.colorScheme) private var colorScheme
+
         func body(content: Content) -> some View {
             content
-                .shadow(color: Color.black.opacity(opacity), radius: radius, x: 0, y: y)
+                .shadow(
+                    color: Color.black.opacity(colorScheme == .dark ? opacity : opacity * 0.45),
+                    radius: radius,
+                    x: 0,
+                    y: y
+                )
         }
     }
 
@@ -105,6 +120,26 @@ extension Color {
             green: Double((hex >> 8) & 0xFF) / 255,
             blue: Double(hex & 0xFF) / 255,
             opacity: alpha
+        )
+    }
+
+    /// A color that re-resolves between `lightHex` and `darkHex` whenever the
+    /// active color scheme changes. Plain `Color(hex:)` values stay dark
+    /// forever — this is what actually flips the palette in light mode.
+    static func adaptive(light lightHex: UInt32, dark darkHex: UInt32) -> Color {
+        Color(uiColor: UIColor { traits in
+            UIColor(hex: traits.userInterfaceStyle == .dark ? darkHex : lightHex)
+        })
+    }
+}
+
+private extension UIColor {
+    convenience init(hex: UInt32) {
+        self.init(
+            red: CGFloat((hex >> 16) & 0xFF) / 255,
+            green: CGFloat((hex >> 8) & 0xFF) / 255,
+            blue: CGFloat(hex & 0xFF) / 255,
+            alpha: 1
         )
     }
 }
