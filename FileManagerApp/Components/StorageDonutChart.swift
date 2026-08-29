@@ -61,3 +61,14 @@ struct StorageDonutChart: View {
         }
     }
 }
+
+#Preview {
+    StorageDonutChart(breakdown: [
+        StorageService.CategoryUsage(category: .documents, size: 512_000_000),
+        StorageService.CategoryUsage(category: .media, size: 1_200_000_000),
+        StorageService.CategoryUsage(category: .downloads, size: 84_000_000),
+        StorageService.CategoryUsage(category: .other, size: 3_200_000),
+    ])
+    .padding(24)
+    .background(Theme.background)
+}

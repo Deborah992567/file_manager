@@ -76,3 +76,12 @@ struct QuickAccessChips: View {
         .buttonStyle(QuietButtonStyle())
     }
 }
+
+#Preview {
+    QuickAccessChips(
+        currentNode: FolderNode.directory(FileService.shared.rootURL, named: "On My iPhone"),
+        onSelect: { _ in },
+        onLockedFolder: {}
+    )
+    .background(Theme.background)
+}

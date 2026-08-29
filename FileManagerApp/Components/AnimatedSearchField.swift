@@ -61,3 +61,9 @@ struct AnimatedSearchField: View {
         .animation(AppMotion.spring, value: focused)
     }
 }
+
+#Preview {
+    AnimatedSearchField(text: .constant(""))
+        .padding(20)
+        .background(Theme.background)
+}

@@ -111,3 +111,11 @@ struct FolderPickerView: View {
         scanned = true
     }
 }
+
+#Preview {
+    FolderPickerView(
+        rootURL: FileService.shared.rootURL,
+        excludedIDs: [],
+        onSelect: { _ in }
+    )
+}
