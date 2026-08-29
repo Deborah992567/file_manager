@@ -58,3 +58,15 @@ struct BreadcrumbBar: View {
         .buttonStyle(QuietButtonStyle())
     }
 }
+
+#Preview {
+    BreadcrumbBar(
+        crumbs: [
+            FolderNode.directory(FileService.shared.rootURL, named: "On My iPhone"),
+            FolderNode.directory(URL(fileURLWithPath: "/Documents"), named: "Documents"),
+        ],
+        onSelect: { _ in }
+    )
+    .padding(16)
+    .background(Theme.background)
+}

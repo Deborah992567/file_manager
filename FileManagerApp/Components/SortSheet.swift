@@ -148,3 +148,11 @@ struct SortSheet: View {
         .buttonStyle(QuietButtonStyle())
     }
 }
+
+#Preview {
+    SortSheet(
+        sortOption: .constant(.name),
+        sortDirection: .constant(.ascending),
+        viewMode: .constant(.grid)
+    )
+}

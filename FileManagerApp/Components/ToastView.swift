@@ -71,3 +71,12 @@ struct ToastHost: View {
         .animation(AppMotion.spring, value: appState.toastToken)
     }
 }
+
+#Preview {
+    VStack {
+        ToastView(message: .success("Deleted", subtitle: "Report.pdf"))
+        ToastView(message: .error("Authentication failed", subtitle: "Try again."))
+    }
+    .padding(20)
+    .background(Theme.background)
+}

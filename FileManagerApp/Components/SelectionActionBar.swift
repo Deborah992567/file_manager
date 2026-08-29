@@ -111,3 +111,18 @@ struct SelectionActionBar: View {
         .shadow(color: .black.opacity(0.5), radius: 24, y: -6)
     }
 }
+
+#Preview {
+    SelectionActionBar(
+        count: 3,
+        onMove: {},
+        onCopy: {},
+        onZip: {},
+        onShare: {},
+        onDelete: {},
+        onSelectAll: {},
+        onClose: {}
+    )
+    .padding(16)
+    .background(Theme.background)
+}
