@@ -49,9 +49,9 @@ final class FileService {
     private(set) var recents: [FileItem] = []
 
     private enum Keys {
-        static let tags   = "file.tags"          // [relativePath : TagColor.rawValue]
-        static let recents = "file.recents"      // [String] relative paths, newest first
-        static let locked = "file.lockedCreated"
+        static let tags    = "file.tags"       // [relativePath : TagColor.rawValue]
+        static let recents = "file.recents"    // [String] relative paths, newest first
+        static let locked  = "file.lockedCreated"
     }
 
     // MARK: - Init
@@ -112,8 +112,7 @@ final class FileService {
     }
 
     private func resolve(relativePath path: String) -> URL {
-        let url = rootURL.appendingPathComponent(path)
-        return url
+        rootURL.appendingPathComponent(path)
     }
 
     // MARK: - Folder / file operations
