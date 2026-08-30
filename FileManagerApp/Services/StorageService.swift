@@ -76,27 +76,11 @@ final class StorageService {
         var counts: [FileCategory: Int64] = [:]
         var itemCount = 0
 
-        var stack = [root]
-        while !stack.isEmpty {
-            let dir = stack.removeLast()
-            guard let list = try? fm.contentsOfDirectory(
-                at: dir,
-                includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey],
-                options: [.skipsHiddenFiles]
-            ) else { continue }
-
-            for url in list {
-                let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-                if isDir {
-                    stack.append(url)
-                    continue
-                }
-                itemCount += 1
-                let size = Int64((try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
-                let kind = FileKind.kind(forExtension: url.pathExtension)
-                counts[kind.category, default: 0] += size
-            }
-        }
+        walk(root, countFile: { url, size in
+            itemCount += 1
+            let kind = FileKind.kind(forExtension: url.pathExtension)
+            counts[kind.category, default: 0] += size
+        })
 
         let breakdown = FileCategory.allCases.map {
             CategoryUsage(category: $0, size: counts[$0] ?? 0)
@@ -114,11 +98,21 @@ final class StorageService {
     /// Space occupied by a single file/folder (for per-item info).
     func size(of url: URL) -> Int64 {
         let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-        guard isDir else {
-            return Int64((try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
+        guard !isDir else {
+            var total: Int64 = 0
+            walk(url, countFile: { _, size in total += size })
+            return total
         }
-        var total: Int64 = 0
-        var stack = [url]
+        return Int64((try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
+    }
+
+    /// Breadth-first walk over every file reachable under `root`, calling
+    /// `countFile` with each file's size and continuing into sub-directories.
+    private func walk(
+        _ root: URL,
+        countFile: (URL, Int64) -> Void
+    ) {
+        var stack = [root]
         while !stack.isEmpty {
             let dir = stack.removeLast()
             guard let list = try? fm.contentsOfDirectory(
@@ -126,14 +120,14 @@ final class StorageService {
                 includingPropertiesForKeys: [.isDirectoryKey, .fileSizeKey],
                 options: [.skipsHiddenFiles]
             ) else { continue }
-            for child in list {
-                if (try? child.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false {
-                    stack.append(child)
+            for url in list {
+                if (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false {
+                    stack.append(url)
                 } else {
-                    total += Int64((try? child.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
+                    let size = Int64((try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0)
+                    countFile(url, size)
                 }
             }
         }
-        return total
     }
 }
