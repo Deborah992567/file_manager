@@ -6,7 +6,6 @@ import Observation
 @Observable
 final class SettingsViewModel {
 
-    private let settings = AppSettings.shared
     private let storageService = StorageService.shared
     private let fileService = FileService.shared
     private let securityService = SecurityService.shared
@@ -31,9 +30,4 @@ final class SettingsViewModel {
     }
 
     var isBiometricAvailable: Bool { securityService.isBiometricAvailable }
-
-    func toggleBiometric(_ enabled: Bool) {
-        settings.isBiometricEnabled = enabled
-        Haptics.rigidTap()
-    }
 }
