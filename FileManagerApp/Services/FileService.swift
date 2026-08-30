@@ -66,8 +66,8 @@ final class FileService {
     }
 
     private func createMissingDefaultFolders() {
-        let defaults = ["Downloads"]
-        for name in defaults {
+        let defaultFolders = ["Downloads"]
+        for name in defaultFolders {
             let url = rootURL.appendingPathComponent(name, isDirectory: true)
             if !fm.fileExists(atPath: url.path) { try? fm.createDirectory(at: url, withIntermediateDirectories: true) }
         }
