@@ -96,6 +96,7 @@ struct FolderPickerView: View {
             .contentCard()
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityHint("Opens \(folder.lastPathComponent) to pick a deeper destination")
     }
 
     private func scan() {
