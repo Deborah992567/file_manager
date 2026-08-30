@@ -158,3 +158,8 @@ struct FavoritesView: View {
         }
     }
 }
+
+#Preview {
+    FavoritesView()
+        .environment(AppState())
+}

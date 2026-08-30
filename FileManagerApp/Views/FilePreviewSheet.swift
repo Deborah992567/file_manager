@@ -328,3 +328,14 @@ struct PreviewActionButton: View {
         .buttonStyle(PressEffectButtonStyle(pressedScale: 0.92))
     }
 }
+
+#Preview {
+    FilePreviewSheet(context: FilePreviewContext(item: FileItem(
+        url: URL(fileURLWithPath: "/tmp/Report.pdf"),
+        isDirectory: false,
+        size: 2048,
+        modificationDate: .now,
+        creationDate: .now
+    )))
+    .environment(AppState())
+}
