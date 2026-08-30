@@ -91,7 +91,7 @@ struct FileBrowserView: View {
                     overlayRow("New Folder", icon: "folder.badge.plus") { createFolderPrompt = true; showNewMenu = false }
                     overlayRow("Import Files", icon: "square.and.arrow.down") { showDocumentPicker = true; showNewMenu = false }
                     overlayRow("Import Photos", icon: "photo.on.rectangle.angled") { showPhotoPicker = true; showNewMenu = false }
-                    overlayRow("Select All", icon: "checkmark.circle") { viewModel.selected = Set(viewModel.items.map(\.id)) }
+                    overlayRow("Select All", icon: "checkmark.circle") { viewModel.selectAll(); showNewMenu = false }
                 } onDismiss: { showNewMenu = false }
                 .zIndex(10)
             }
@@ -393,7 +393,7 @@ struct FileBrowserView: View {
                 confirmBatchDelete = true
             },
             onSelectAll: {
-                withAnimation(AppMotion.quick) { viewModel.selected = Set(viewModel.items.map(\.id)) }
+                viewModel.selectAll()
             },
             onClose: {
                 withAnimation(AppMotion.spring) { viewModel.exitSelection() }

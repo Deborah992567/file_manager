@@ -109,6 +109,12 @@ final class FolderViewModel {
         selected = []
     }
 
+    func selectAll() {
+        isSelecting = true
+        selected = Set(items.map(\.id))
+        Haptics.mediumTap()
+    }
+
     // MARK: - Mutations (delegated to services; errors surface via returned Result)
 
     func createFolder(named name: String) -> Result<FileItem, FileOperationError> {
