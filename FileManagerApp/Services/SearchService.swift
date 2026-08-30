@@ -76,10 +76,16 @@ final class SearchService {
     /// Paper-thin grouping helper so results can be sorted by importance or
     /// type without reshuffling matched content.
     static func grouping(_ items: [FileItem], by kinds: [FileKind] = FileKind.allCases) -> [ResultGroup] {
-        let sorted = items.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        let permitted = Set(kinds)
+        var buckets: [FileKind: [FileItem]] = [:]
+        for item in items where permitted.contains(item.kind) {
+            buckets[item.kind, default: []].append(item)
+        }
+        for key in buckets.keys {
+            buckets[key] = buckets[key]!.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        }
         return kinds
-            .map { kind in (kind, sorted.filter { $0.kind == kind }) }
-            .filter { !$0.1.isEmpty }
-            .map { ResultGroup(kind: $0.0, items: $0.1) }
+            .compactMap { kind in buckets[kind].map { ResultGroup(kind: kind, items: $0) } }
+            .filter { !$0.items.isEmpty }
     }
 }
