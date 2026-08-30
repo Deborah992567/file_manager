@@ -62,6 +62,7 @@ struct SettingsView: View {
                                 .background(Capsule().fill(settings.accentChoice == choice ? Theme.accentSoft : Theme.surfaceElevated))
                             }
                             .buttonStyle(QuietButtonStyle())
+                            .accessibilityAddTraits(settings.accentChoice == choice ? .isSelected : [])
                         }
                     }
                 }
@@ -84,6 +85,7 @@ struct SettingsView: View {
                                     .background(Capsule().fill(settings.themePreference == mode ? Theme.accent : Theme.surfaceElevated))
                             }
                             .buttonStyle(QuietButtonStyle())
+                            .accessibilityAddTraits(settings.themePreference == mode ? .isSelected : [])
                         }
                     }
                 }
