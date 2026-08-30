@@ -266,10 +266,6 @@ final class FileService {
         tagStore = store
     }
 
-    func toastTagChange(for item: FileItem, to tag: TagColor) {
-        setTag(tag, for: item)
-    }
-
     func isFavorite(_ item: FileItem) -> Bool {
         tag(for: item) != nil
     }
