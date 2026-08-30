@@ -198,7 +198,7 @@ struct FilePreviewSheet: View {
             infoRow("Path", value: vm.item.url.deletingLastPathComponent().lastPathComponent)
             infoRow("Modified", value: DateFormatting.fileDate(vm.item.modificationDate))
             infoRow("Created", value: DateFormatting.fileDate(vm.item.creationDate))
-            infoRow("Type", value: vm.item.isDirectory ? "Folder" : vm.item.fileExtension.uppercased())
+            infoRow("Type", value: vm.item.isDirectory ? "Folder" : vm.item.displayExtension)
         }
         .padding(.top, 6)
     }

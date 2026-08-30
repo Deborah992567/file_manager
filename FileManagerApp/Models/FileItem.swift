@@ -42,6 +42,11 @@ struct FileItem: Identifiable, Hashable, Sendable {
     var displaySize: String {
         isDirectory ? "Folder" : ByteFormatter.format(size)
     }
+
+    /// Uppercased extension for display; empty for folders.
+    var displayExtension: String {
+        isDirectory ? "" : fileExtension.uppercased()
+    }
 }
 
 // MARK: - File kind
