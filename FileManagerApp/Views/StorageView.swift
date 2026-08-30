@@ -134,3 +134,8 @@ struct StorageView: View {
         }
     }
 }
+
+#Preview {
+    StorageView()
+        .environment(AppState())
+}
