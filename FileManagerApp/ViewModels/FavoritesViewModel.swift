@@ -12,8 +12,6 @@ final class FavoritesViewModel {
 
     private(set) var items: [FileItem] = []
     var filter: KindFilter = .all
-    var isSelecting = false
-    var selected: Set<String> = []
 
     init(service: FileService? = nil) {
         self.service = service ?? .shared
@@ -36,28 +34,6 @@ final class FavoritesViewModel {
         service.setTag(.none, for: item)
         reload()
         Haptics.tick()
-    }
-
-    func retag(_ item: FileItem, to color: TagColor) {
-        service.setTag(color, for: item)
-        reload()
-        Haptics.tap()
-    }
-
-    func toggleSelection(_ item: FileItem) {
-        if selected.contains(item.id) { selected.remove(item.id) }
-        else { selected.insert(item.id) }
-    }
-
-    func enterSelection() {
-        isSelecting = true
-        selected = []
-        Haptics.mediumTap()
-    }
-
-    func exitSelection() {
-        isSelecting = false
-        selected = []
     }
 
     var isEmpty: Bool { items.isEmpty }
