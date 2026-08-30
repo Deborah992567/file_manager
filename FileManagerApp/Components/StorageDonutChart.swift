@@ -38,6 +38,10 @@ struct StorageDonutChart: View {
         }
         .frame(width: 190, height: 190)
         .opacity(appeared ? 1 : 0)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Storage used")
+        .accessibilityValue(ByteFormatter.format(total))
+        .accessibilityHint("\(breakdown.count) categories in the legend below")
         .onAppear {
             withAnimation(AppMotion.spring.delay(0.1)) { appeared = true }
         }

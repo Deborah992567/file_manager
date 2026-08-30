@@ -57,6 +57,7 @@ struct StorageBarView: View {
             .contentCard()
         }
         .buttonStyle(QuietButtonStyle())
+        .accessibilityHint("Opens the storage breakdown")
         .onAppear {
             // Animate once per appearance; re-show after refresh re-creates.
             guard !appeared else { return }
