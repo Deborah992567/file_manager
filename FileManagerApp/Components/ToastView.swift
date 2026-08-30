@@ -67,7 +67,6 @@ struct ToastHost: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
-        .animation(AppMotion.spring, value: appState.toast?.id)
         .animation(AppMotion.spring, value: appState.toastToken)
     }
 }
