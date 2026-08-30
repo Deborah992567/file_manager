@@ -272,6 +272,10 @@ struct LockedFolderView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(item.name)
         .accessibilityHint(item.isDirectory ? "Folder" : "Opens a preview of this file")
+        .accessibilityAction(named: "Delete") {
+            Haptics.warn()
+            pendingDelete = item
+        }
     }
 
     private func confirmDelete() {
