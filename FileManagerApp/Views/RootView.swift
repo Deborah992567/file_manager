@@ -151,6 +151,7 @@ struct LockScreenView: View {
                 }
                 .buttonStyle(PressEffectButtonStyle())
                 .disabled(isAuthenticating)
+                .accessibilityHint("Uses Face ID or Touch ID to unlock Nova Files")
                 .padding(.top, 8)
 
                 Spacer()
