@@ -70,6 +70,12 @@ struct CustomTabBar: View {
     }
 }
 
+#Preview {
+    CustomTabBar(selection: .constant(.browse))
+        .padding(.top, 40)
+        .background(Theme.background)
+}
+
 private struct TabItem: View {
     let tab: AppTab
     let isActive: Bool
