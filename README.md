@@ -77,7 +77,7 @@ Or from the terminal:
 
 ## Status
 
-Milestone reached — **80 pushes / commits** to this repository with a green,
+Milestone reached — **110 pushes / commits** to this repository with a green,
 warning-free build, an 11-check headless verification suite and a passing
 simulator smoke launch. See `CHANGELOG.md` for the full build history.
 

@@ -2,6 +2,20 @@
 
 All notable milestones in the Nova Files build are listed here, newest first.
 
+## [0.2.0] — Milestone: 110 pushed commits
+
+- Accessibility sweep: VoiceOver labels, hints and custom actions for grid
+  tiles, list rows, folder picker rows, selection bar, favorites actions,
+  folder-picker rows, storage bar/donut, search chips & recents, sort sheet.
+- Light-mode support: the theme exposes an adaptive palette so the app stays
+  legible (and deliberately cinematic) in both appearances.
+- Real actions wired into native context menus (favorite, duplicate, rename,
+  move, zip, share, delete) — previously decorative placeholders.
+- Engineering: cached byte formatter, shared free-name walker, shared
+  file-system values reader, single favorite-toggle path, deflate size
+  verification, hardened smoke-launch probe, generic settings decoding.
+- Broader component preview coverage; every build still zero Swift warnings.
+
 ## [0.1.0] — Milestone: 80 pushed commits
 
 - Full feature set shipped: browse (grid/list), search, favorites & tags,
