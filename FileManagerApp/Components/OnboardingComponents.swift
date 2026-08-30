@@ -128,3 +128,16 @@ struct AmbientGradientBackground: View {
         }
     }
 }
+
+#Preview {
+    OnboardingPageCard(
+        page: OnboardingPage(
+            icon: "square.grid.2x2",
+            title: "Every file, in its place",
+            subtitle: "Browse folders in a gorgeous grid or list.",
+            gradient: [Theme.accent, Theme.accentViolet]
+        ),
+        delay: 0
+    )
+    .background(Theme.background)
+}

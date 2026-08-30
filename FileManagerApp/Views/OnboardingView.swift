@@ -195,3 +195,8 @@ struct PermissionRationaleCard: View {
         }
     }
 }
+
+#Preview {
+    OnboardingView()
+        .environment(AppState())
+}
