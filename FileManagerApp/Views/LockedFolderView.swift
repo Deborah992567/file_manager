@@ -247,7 +247,7 @@ struct LockedFolderView: View {
                         .font(Theme.Font.body(15, weight: .semibold))
                         .foregroundStyle(Theme.textPrimary)
                         .lineLimit(1)
-                    Text(item.isDirectory ? "Folder" : "\(item.displayExtension) · \(ByteFormatter.format(item.size))")
+                    Text(item.detailLine)
                         .font(.system(size: 12, weight: .regular))
                         .foregroundStyle(Theme.textSecondary)
                 }
