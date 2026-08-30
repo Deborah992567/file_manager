@@ -2,6 +2,20 @@
 
 All notable milestones in the Nova Files build are listed here, newest first.
 
+## [0.3.0] — Milestone: 120 pushed commits
+
+- Correctness: context-menu "Select All" now actually enters selection mode
+  and closes the menu; deflate streams verify their inflated size; the
+  smoke-launch probe matches the real bundle id.
+- Engineering: single-pass search-result bucketing, shared storage tree walk,
+  generic persisted-settings decoding, one detail-line helper, cached
+  on-device extension strings, dead API pruned (favorites selection,
+  biometric toggle passthrough, tag-toast passthrough).
+- Accessibility continued: storage bar/donut, locked-folder row delete,
+  accent/theme/sort/search selection state, lock & unlock controls, toast
+  host single-animation source.
+- Every build still compiles with zero Swift warnings.
+
 ## [0.2.0] — Milestone: 110 pushed commits
 
 - Accessibility sweep: VoiceOver labels, hints and custom actions for grid
