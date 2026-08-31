@@ -2,6 +2,19 @@
 
 All notable milestones in the Nova Files build are listed here, newest first.
 
+## [0.4.0] — Milestone: 130 pushed commits
+
+- Launch polish: the splash now staggers its wordmark in, settles the mark
+  with a soft overshoot wobble and loops a baseline shimmer under the tagline.
+- Onboarding liveliness: page icons breathe and drip an orbiting dash ring,
+  swipes tick a light haptic, a page counter tracks progress and the primary
+  action sparks with a one-shot shine.
+- Micro-interactions elsewhere: photo thumbnails shimmer while decoding then
+  fade in, toast icons pop on arrival, sort-direction arrows bounce, quick-access
+  chips stagger in, the storage donut races its sectors a place, and tab icons
+  celebrate selection with a bounce.
+- Every build still compiles with zero Swift warnings.
+
 ## [0.3.0] — Milestone: 120 pushed commits
 
 - Correctness: context-menu "Select All" now actually enters selection mode
