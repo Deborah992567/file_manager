@@ -133,22 +133,24 @@ struct SortSheet: View {
     }
 
     private func directionButton(_ direction: SortDirection) -> some View {
-        Button {
+        let isSelected = sortDirection == direction
+        return Button {
             Haptics.tick()
-            withAnimation(AppMotion.quick) { sortDirection = direction }
+            withAnimation(AppMotion.spring) { sortDirection = direction }
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: direction.symbolName)
+                    .symbolEffect(.bounce, value: isSelected)
                 Text(direction.label)
             }
             .font(Theme.Font.body(14, weight: .semibold))
-            .foregroundStyle(sortDirection == direction ? .white : Theme.textSecondary)
+            .foregroundStyle(isSelected ? .white : Theme.textSecondary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
-            .background(Capsule().fill(sortDirection == direction ? Theme.accent : Theme.surfaceElevated))
+            .background(Capsule().fill(isSelected ? Theme.accent : Theme.surfaceElevated))
         }
         .buttonStyle(QuietButtonStyle())
-        .accessibilityAddTraits(sortDirection == direction ? .isSelected : [])
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
