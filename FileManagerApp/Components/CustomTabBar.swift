@@ -96,6 +96,8 @@ private struct TabItem: View {
                         .font(.system(size: 19, weight: .semibold))
                         .foregroundStyle(isActive ? Theme.accent : Theme.textSecondary)
                         .scaleEffect(isActive ? 1.08 : 1)
+                        // A little celebratory bounce whenever a tab is selected.
+                        .symbolEffect(.bounce, value: isActive)
                 }
                 .frame(height: 34)
 
