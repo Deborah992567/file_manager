@@ -68,6 +68,10 @@ struct OnboardingView: View {
                     .padding(.bottom, 26)
             }
         }
+        .onChange(of: page) { _, _ in
+            // Confirm each swipe with a light touch.
+            Haptics.softTap()
+        }
         .overlay {
             if showPermissionCard {
                 PermissionRationaleCard(
@@ -91,8 +95,13 @@ struct OnboardingView: View {
     // MARK: - Subviews
 
     private var pageIndicator: some View {
-        HStack(spacing: 7) {
+        HStack(spacing: 14) {
             MorphingDots(count: pages.count, index: page)
+
+            Text("\(page + 1) / \(pages.count)")
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundStyle(Theme.textTertiary)
+                .contentTransition(.numericText(value: Double(page)))
         }
         .frame(maxWidth: .infinity)
         .padding(.bottom, 6)
