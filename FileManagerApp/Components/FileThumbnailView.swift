@@ -58,6 +58,8 @@ private struct ImageThumbnail: View {
     let size: CGFloat
 
     @State private var image: UIImage?
+    @State private var loaded = false
+    @State private var shimmering = false
 
     var body: some View {
         Group {
@@ -65,10 +67,25 @@ private struct ImageThumbnail: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
+                    .opacity(loaded ? 1 : 0)
+                    .scaleEffect(loaded ? 1 : 1.05)
             } else {
-                RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
-                    .fill(Color.black.opacity(0.4))
-                    .overlay(ProgressView().tint(Theme.textTertiary))
+                // Shimmering placeholder while the thumbnail decodes.
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                            .fill(Color.black.opacity(0.4))
+
+                        RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                            .fill(
+                                LinearGradient(colors: [.clear, Theme.surfaceElevated.opacity(0.55), .clear],
+                                               startPoint: .leading,
+                                               endPoint: .trailing)
+                            )
+                            .frame(width: size * 0.55, height: size)
+                            .offset(x: (shimmering ? 1 : -1.6) * size)
+                    }
+                }
             }
         }
         .frame(width: size, height: size)
@@ -79,6 +96,12 @@ private struct ImageThumbnail: View {
         )
         .task {
             image = Self.downsample(url: url, pixelSize: Int(size * 2))
+            withAnimation { loaded = true }
+        }
+        .onAppear {
+            withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: true)) {
+                shimmering = true
+            }
         }
     }
 
