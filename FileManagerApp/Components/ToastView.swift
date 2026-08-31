@@ -5,11 +5,12 @@ import SwiftUI
 struct ToastView: View {
     let message: ToastMessage
 
+    @State private var entered = false
+
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: message.icon)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(message.accentColor)
+            icon
+                .modifier(StaggerEntrance(entered: entered, delay: 0.05))
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(message.title)
@@ -48,6 +49,15 @@ struct ToastView: View {
         )
         .padding(.horizontal, 14)
         .shadow(color: .black.opacity(0.5), radius: 20, y: 10)
+        .onAppear {
+            withAnimation(AppMotion.spring) { entered = true }
+        }
+    }
+
+    private var icon: some View {
+        Image(systemName: message.icon)
+            .font(.system(size: 18, weight: .semibold))
+            .foregroundStyle(message.accentColor)
     }
 }
 
