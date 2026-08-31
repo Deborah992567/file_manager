@@ -118,8 +118,10 @@ struct OnboardingView: View {
             }
         } label: {
             HStack(spacing: 8) {
-                Text(page == pages.count - 1 ? "Get Started" : "Next")
-                Image(systemName: page == pages.count - 1 ? "sparkles" : "arrow.right")
+                ShimmerButtonLabel(
+                    systemImage: page == pages.count - 1 ? "sparkles" : "arrow.right",
+                    text: page == pages.count - 1 ? "Get Started" : "Next"
+                )
             }
             .font(Theme.Font.body(17, weight: .bold))
             .foregroundStyle(.white)
