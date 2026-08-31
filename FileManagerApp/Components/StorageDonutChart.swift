@@ -16,10 +16,12 @@ struct StorageDonutChart: View {
             Circle()
                 .stroke(Theme.surfaceElevated, lineWidth: 20)
 
-            // Cumulative trim per sector — rotate each to stack them.
+            // Cumulative trim per sector — rotate each to stack them. Each
+            // sector draws in from zero with a tiny stagger so the donut
+            // "races" into place.
             ForEach(cumulativePairs) { pair in
                 Circle()
-                    .trim(from: pair.start, to: pair.end)
+                    .trim(from: pair.start, to: appeared ? pair.end : pair.start)
                     .stroke(
                         pair.usage.category.color,
                         style: StrokeStyle(lineWidth: 20, lineCap: .butt)
@@ -43,6 +45,7 @@ struct StorageDonutChart: View {
         .accessibilityValue(ByteFormatter.format(total))
         .accessibilityHint("\(breakdown.count) categories in the legend below")
         .onAppear {
+            // Slight delay so the ring sweeps, not pops.
             withAnimation(AppMotion.spring.delay(0.1)) { appeared = true }
         }
     }
