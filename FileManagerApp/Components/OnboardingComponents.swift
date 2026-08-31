@@ -16,6 +16,8 @@ struct OnboardingPageCard: View {
     let delay: Double
 
     @State private var entered = false
+    @State private var breathing = false
+    @State private var orbiting = false
 
     var body: some View {
         VStack(spacing: 28) {
@@ -30,6 +32,8 @@ struct OnboardingPageCard: View {
         .frame(maxWidth: .infinity)
         .onAppear {
             withAnimation(AppMotion.spring) { entered = true }
+            withAnimation(AppMotion.ambient.repeatForever(autoreverses: true)) { breathing = true }
+            withAnimation(.linear(duration: 7).repeatForever(autoreverses: false)) { orbiting = true }
         }
     }
 
@@ -47,6 +51,16 @@ struct OnboardingPageCard: View {
                     Circle()
                         .strokeBorder(Theme.surfaceStroke, lineWidth: 1)
                 }
+                // Slow pulse so each page feels alive before the swipe.
+                .scaleEffect(breathing ? 1.04 : 0.97)
+
+            // Dashed orbit ring that drips clockwise around the disc.
+            Circle()
+                .trim(from: 0, to: 0.82)
+                .stroke(page.gradient.first?.opacity(0.7) ?? Theme.accent.opacity(0.7),
+                        style: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [14, 12]))
+                .frame(width: 156, height: 156)
+                .rotationEffect(.degrees(orbiting ? 360 : 0))
 
             Image(systemName: page.icon)
                 .font(.system(size: 46, weight: .medium))
