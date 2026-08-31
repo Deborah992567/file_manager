@@ -7,6 +7,8 @@ struct QuickAccessChips: View {
     let onSelect: (FolderNode) -> Void
     let onLockedFolder: () -> Void
 
+    @State private var appeared = false
+
     private var chips: [(icon: String, label: String, node: FolderNode)] {
         [
             ("iphone", "On My iPhone", FolderNode.directory(FileService.shared.rootURL, named: "On My iPhone")),
@@ -25,16 +27,22 @@ struct QuickAccessChips: View {
                 // Inline "locked" chip so it only renders when it exists.
                 let all = hasLocked ? chips + [lockedChip] : chips
 
-                ForEach(Array(all.enumerated()), id: \.element.node.id) { _, chip in
+                ForEach(Array(all.enumerated()), id: \.element.node.id) { index, chip in
+                    let delay = Double(index) * 0.06
                     if chip.label == "Locked" {
                         lockedChipView(icon: chip.icon, label: chip.label)
+                            .modifier(StaggerEntrance(entered: appeared, delay: delay))
                     } else {
                         chipButton(icon: chip.icon, label: chip.label, node: chip.node)
+                            .modifier(StaggerEntrance(entered: appeared, delay: delay))
                     }
                 }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 6)
+        }
+        .onAppear {
+            withAnimation(AppMotion.spring) { appeared = true }
         }
     }
 
